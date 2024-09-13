@@ -1,39 +1,57 @@
 "use strict";
 let theNumber = Math.floor(Math.random() * 20)+1;
 let score = 20;
-
+let message = document.querySelector(".message");
+let number = document.querySelector(".number");
+let highScore = document.querySelector(".highscore");
 function newScore() {
   score = Math.max(score - 1, 0);
   document.querySelector(".score").textContent = score;
+  if (highScore.textContent < score) {
+    highScore.textContent = score;
+  }
   if (score === 0) {
-    document.querySelector(".message").textContent = "You lost";
-    document.querySelector(".score").textContent = "Game over";
+    message.textContent = "You lost";
+    document.querySelector(".score").textContent = "⛔ Game over";
     
 }}
 
-document.querySelector(".check").addEventListener("click", function () {
+function checkGuess() {
   let guess = Number(document.querySelector(".guess").value);
   if (!guess) {
-    document.querySelector(".message").textContent = "Please enter a number";
+    document.querySelector(".message").textContent = "🔢 Please enter a number";
   } else if (theNumber === guess) {
-      document.querySelector(".message").textContent = "You win";
-      document.querySelector(".number").textContent = theNumber;
+      message.textContent = "🎉 You win";
+      number.textContent = theNumber;
       document.querySelector("body").style.backgroundColor = "#4CBB17";
-      document.querySelector(".number").style.width = "30rem";
+      number.style.width = "30rem";
       newScore();
     } else if (theNumber > guess && guess > 0) {
-      document.querySelector(".message").textContent = "Too low";
+      message.textContent = "📉 Too low";
       newScore();
     } else if (theNumber < guess && guess > 0) {
-      document.querySelector(".message").textContent = "Too high";
+      message.textContent = "📈 Too high";
       newScore();
     }
-  });
+  };
+
+
+// Run checkGuess when the button is clicked
+document.querySelector(".check").addEventListener("click", checkGuess);
+
+// Run checkGuess when the Enter key is pressed
+document.addEventListener("keydown", function (event) {
+  if (event.key === "Enter") {
+    checkGuess();
+  }
+});
 
   document.querySelector(".again").addEventListener("click", function () {
-    document.querySelector(".message").textContent = "Start guessing...";
+    message.textContent = "Start guessing...";
     document.querySelector(".guess").value = "";
-    document.querySelector(".number").textContent = "?";
+    number.textContent = "?";
     document.querySelector(".score").textContent = 20;
-     document.querySelector("body").style.backgroundColor = "#222";
+    document.querySelector("body").style.backgroundColor = "#222";
   });
+
+ 
